@@ -1,14 +1,14 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 import { Gitlab, Types } from "@gitbeaker/node"
 import { RepoMetaData } from "./RepoMetaData"
-import { ExpandedMergeRequestSchema as ExpandedMergeRequestSchema } from "@gitbeaker/core/dist"
+import { Types as CoreTypes } from "@gitbeaker/core/dist"
 
 // getPlatformReviewDSLRepresentation
 export interface GitLabJSONDSL {
   /** Info about the repo */
   metadata: RepoMetaData
   /** Info about the merge request */
-  mr: ExpandedMergeRequestSchema
+  mr: CoreTypes.ExpandedMergeRequestSchema
   /** All the individual commits in the merge request */
   commits: Types.CommitSchema[]
   /** Merge Request-level MR approvals Configuration */

@@ -1,6 +1,6 @@
 import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { Gitlab, Types } from "@gitbeaker/node"
-import { Types as CoreTypes } from "@gitbeaker/core/dist"
+import { ExpandedMergeRequestSchema as ExpandedMergeRequestSchema } from "@gitbeaker/core/dist"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -64,7 +64,7 @@ class GitLabAPI {
     return `${this.projectURL}/merge_requests/${this.prId}`
   }
 
-  get apiInstance() {
+  get apiInstance(): InstanceType<typeof Gitlab> {
     return this.api
   }
 
@@ -76,11 +76,11 @@ class GitLabAPI {
     return user
   }
 
-  getMergeRequestInfo = async (): Promise<CoreTypes.ExpandedMergeRequestSchema> => {
+  getMergeRequestInfo = async (): Promise<ExpandedMergeRequestSchema> => {
     this.d(`getMergeRequestInfo for repo: ${this.repoSlug} pr: ${this.prId}`)
     const mr = await this.api.MergeRequests.show(this.repoSlug, this.prId)
     this.d("getMergeRequestInfo", mr)
-    return mr as CoreTypes.ExpandedMergeRequestSchema
+    return mr as ExpandedMergeRequestSchema
   }
 
   updateMergeRequestInfo = async (
@@ -242,7 +242,8 @@ class GitLabAPI {
   removeLabels = async (...labels: string[]): Promise<boolean> => {
     const mr = await this.getMergeRequestInfo()
     for (const label of labels) {
-      const index = mr.labels?.indexOf(label)
+      let labels = mr.labels as string[]
+      const index = labels.indexOf(label)
       if ((index as number) > -1) {
         mr.labels?.splice(index as number, 1)
       }
